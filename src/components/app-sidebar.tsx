@@ -65,7 +65,7 @@ export function AppSidebar() {
             <Link
               to="/notes/new"
               className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground">
-              Create
+              Create Note
               <Plus className="size-3" />
             </Link>
           </div>
