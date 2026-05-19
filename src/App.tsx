@@ -1,18 +1,41 @@
-import "./App.css"
-import { Editor } from "./components/ui/Editor"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Inbox from "./pages/Inbox"
+import Dashboard from "./pages/Dashboard"
+import Notes from "./pages/Notes"
+import NewNote from "./pages/NewNote"
+import NoteDetail from "./pages/NoteDetail"
+
 
 function App() {
   return (
-    <main className="min-h-screen bg-neutral-950 p-6 text-white">
-      <div className="mx-auto max-w-5xl">
-        <h1 className="mb-6 text-3xl font-bold">Z.OS</h1>
-        <Editor />
-      </div>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/inbox" element={<Inbox />} />
+        <Route path="/notes" element={<Notes />} />
+        <Route path="/notes/new" element={<NewNote />} />
+        <Route path="/notes/:id" element={<NoteDetail />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
 export default App
+
+
+// EDITOR EXAMPLE
+// function App() {
+//   return (
+//     <main className="min-h-screen bg-neutral-950 p-6 text-white">
+//       <div className="mx-auto max-w-5xl">
+//         <h1 className="mb-6 text-3xl font-bold">Z.OS</h1>
+//         <Editor />
+//       </div>
+//     </main>
+//   )
+// }
+
+// export default App
 
 // import { useState } from "react";
 // import reactLogo from "./assets/react.svg";
