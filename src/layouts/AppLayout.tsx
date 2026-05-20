@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 
 type Props = {
@@ -10,13 +10,14 @@ export default function AppLayout({ children }: Props) {
     <SidebarProvider>
       <AppSidebar />
 
-      <main className="flex-1 p-4">
-        <SidebarTrigger />
-
-        <div className="mt-4">
-          {children}
+      <SidebarInset>
+        <div className="p-4">
+          <SidebarTrigger />
+          <div className="mt-4">
+            {children}
+          </div>
         </div>
-      </main>
+      </SidebarInset>
     </SidebarProvider>
   )
 }

@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom"
 import {
   Inbox,
+  Sun,
+  CalendarDays,
   FolderKanban,
   CheckSquare,
   ChevronDown,
   LayoutDashboard,
   Settings,
   Plus,
+  BookOpen,
+  Binoculars,
+  Grid2X2,
+  MapPin,
 } from "lucide-react"
 import { useNotes } from "@/context/NotesContext"
 
@@ -19,6 +25,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarSeparator,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -43,33 +50,37 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg">
-              <div className="flex size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <LayoutDashboard className="size-4" />
-              </div>
-
-              <div className="flex flex-col">
-                <span className="font-semibold">My Dashboard</span>
-                <span className="text-xs text-sidebar-foreground/70">
-                  Workspace
-                </span>
-              </div>
+            <SidebarMenuButton size="lg" asChild>
+              <Link to="/">
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <LayoutDashboard className="size-4" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-semibold">Z.//. OS</span>
+                  <span className="text-xs text-sidebar-foreground/70">Workspace</span>
+                </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-
+      {/* CREATE NOTE BUTTON */}
       <SidebarContent>
         <SidebarGroup>
-          <div className="flex justify-end">
-            <Link
-              to="/notes/new"
-              className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground">
-              Create Note
-              <Plus className="size-3" />
-            </Link>
-          </div>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link to="/notes/new">
+                  <Plus />
+                  <span>Create Note</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarGroup>
+
+        <SidebarSeparator />
+
         <SidebarGroup>
             <SidebarGroupLabel className="p-0">Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -83,18 +94,63 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/today">
+                    <Sun />
+                    <span>Today</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/upcoming">
+                    <CalendarDays />
+                    <span>Upcoming</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* ALL TASKS */}
+              <Collapsible className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                      <CheckSquare />
+                      <span>All Tasks</span>
+                      <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {tasks.map((task) => (
+                        <SidebarMenuSubItem key={task}>
+                          <SidebarMenuSubButton>
+                            <span>{task}</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+
+              <SidebarSeparator className="my-2" />
+
               {/* NOTES */}
-              <Collapsible defaultOpen className="group/collapsible">
+              <Collapsible  className="group/collapsible">
                 <SidebarMenuItem>
                   <div className="flex items-center gap-1">
                     <SidebarMenuButton asChild className="flex-1">
                       <Link to="/notes">
-                        <FolderKanban />
+                        <BookOpen />
                         <span>Notes</span>
                       </Link>
                     </SidebarMenuButton>
                     <CollapsibleTrigger asChild>
-                      <button className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-sidebar-accent">
+                      <button className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-sidebar-accent group-data-[collapsible=icon]:hidden">
                         <ChevronDown className="size-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
                       </button>
                     </CollapsibleTrigger>
@@ -116,7 +172,7 @@ export function AppSidebar() {
               </Collapsible>
 
               {/* PROJECTS */}
-              <Collapsible defaultOpen className="group/collapsible">
+              <Collapsible  className="group/collapsible">
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuButton>
@@ -125,7 +181,7 @@ export function AppSidebar() {
                       <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
-
+                  
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {projects.map((project) => (
@@ -140,42 +196,47 @@ export function AppSidebar() {
                 </SidebarMenuItem>
               </Collapsible>
 
-              {/* TASKS */}
-              <Collapsible className="group/collapsible">
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton>
-                      <CheckSquare />
-                      <span>Tasks</span>
-                      <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/areas">
+                    <Grid2X2 />
+                    <span>Areas</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
 
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {tasks.map((task) => (
-                        <SidebarMenuSubItem key={task}>
-                          <SidebarMenuSubButton>
-                            <span>{task}</span>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/tags">
+                    <MapPin />
+                    <span>Tags</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/views">
+                    <Binoculars />
+                    <span>Views</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
+                      <SidebarSeparator />
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Settings />
-              <span>Settings</span>
-            </SidebarMenuButton>
+           <SidebarMenuButton asChild>
+                  <Link to="/settings">
+                    <Settings />
+                    <span>Settings</span>
+                  </Link>
+                </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

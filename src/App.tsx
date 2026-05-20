@@ -4,6 +4,13 @@ import Dashboard from "./pages/Dashboard"
 import Notes from "./pages/Notes"
 import NewNote from "./pages/NewNote"
 import NoteDetail from "./pages/NoteDetail"
+import Today from "./pages/Today"
+import Upcoming from "./pages/Upcoming"
+import Areas from "./pages/Areas"
+import Settings from "./pages/Settings"
+import Views from "./pages/Views"
+import Tags from "./pages/Tags"
+
 
 
 function App() {
@@ -12,9 +19,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/inbox" element={<Inbox />} />
+        <Route path="/today" element={<Today />} />
+        <Route path="/upcoming" element={<Upcoming />} />
         <Route path="/notes" element={<Notes />} />
         <Route path="/notes/new" element={<NewNote />} />
         <Route path="/notes/:id" element={<NoteDetail />} />
+        <Route path="/areas" element={<Areas />} />
+        <Route path="/views" element={<Views />} />
+        <Route path="/tags" element={<Tags />} />
+        <Route path="/settings" element={<Settings/>} />
       </Routes>
     </BrowserRouter>
   )
